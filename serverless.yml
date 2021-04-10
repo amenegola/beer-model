@@ -22,8 +22,6 @@ provider:
 functions:
   app:
     handler: main.handler
-    layers:
-      - { Ref: PythonRequirementsLambdaLayer }
     events:
       - httpApi:
           path: '*'
@@ -31,18 +29,15 @@ functions:
 custom:
   pythonRequirements:
     dockerizePip: true
-    useDownloadCache: true
-    useStaticCache: true
+    useDownloadCache: false
     slim: true
-    zip: true
-    strip: false
-    layer:
-      name: ${self:provider.stage}-python-libs
-      description: Python requirements lambda layer
-      compatibleRuntimes:
-        - python3.8
-      allowedAccounts:
-        - '*'
+    strip: true
+    noDeploy:
+      - boto3
+      - botocore
+      - scipy
+      - scipy.libs
+      - boto3
 
 package:
   exclude:

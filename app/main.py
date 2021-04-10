@@ -1,9 +1,3 @@
-
-try:
-  import unzip_requirements
-except ImportError:
-  pass
-
 from fastapi import FastAPI
 
 from app.api.routes.router import api_router
