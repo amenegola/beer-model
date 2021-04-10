@@ -1,34 +1,29 @@
-from pydantic import BaseModel, Field
-from typing import (List, Optional)
+
+try:
+  import unzip_requirements
+except ImportError:
+  pass
+
 from fastapi import FastAPI
+
+from app.api.routes.router import api_router
+from app.core.config import (API_PREFIX, APP_NAME, APP_VERSION,
+                             IS_DEBUG)
+from app.core.event_handlers import (start_app_handler,
+                                     stop_app_handler)
 from mangum import Mangum
 
-app = FastAPI(title='Model API', description='Model API')
 
-class out_response(BaseModel):
-    str_id:str
+def get_app() -> FastAPI:
+    fast_app = FastAPI(title=APP_NAME, version=APP_VERSION, debug=IS_DEBUG)
+    fast_app.include_router(api_router, prefix=API_PREFIX)
 
-class in_response_suficiencia(BaseModel):
-    ls_lista_cnes:List[str]
-    num_vidas:int         
-    num_agenda:int       
-    num_cenario:int        
-    str_uf:str              
-    ls_mun:List[str] 
-    
-class in_response_vidas(BaseModel):
-    ls_mun:List[str]
-    str_uf:str
+    fast_app.add_event_handler("startup", start_app_handler(fast_app))
+    fast_app.add_event_handler("shutdown", stop_app_handler(fast_app))
 
-@app.get('/health')
-def health():
-    return {'health_status': 'ok'}
+    return fast_app
 
-#@app.post("/predict", response_model=out_response)
-#def read_calculadora(entrada:in_response_suficiencia):
-@app.get("/predict")
-def predict():
 
-    return {"Hello Medium Reader": "from FastAPI & API Gateway"}
+app = get_app()
 
 handler = Mangum(app)

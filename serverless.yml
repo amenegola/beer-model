@@ -13,10 +13,17 @@ provider:
   lambdaHashingVersion: 20201221
   logs:
     httpApi: true
-  
+  environment:
+    IS_DEBUG: ${env:IS_DEBUG}
+    API_KEY: ${env:API_KEY}
+    BUCKET_MODEL_ARTIFACTS: ${env:BUCKET_MODEL_ARTIFACTS}
+    MODEL_FILENAME: ${env:MODEL_FILENAME}
+
 functions:
   app:
-    handler: app.main.handler
+    handler: main.handler
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
     events:
       - httpApi:
           path: '*'
@@ -24,13 +31,26 @@ functions:
 custom:
   pythonRequirements:
     dockerizePip: true
-    useDownloadCache: false
+    useDownloadCache: true
+    useStaticCache: true
+    slim: true
+    zip: true
+    strip: false
+    layer:
+      name: ${self:provider.stage}-python-libs
+      description: Python requirements lambda layer
+      compatibleRuntimes:
+        - python3.8
+      allowedAccounts:
+        - '*'
 
 package:
   exclude:
     - node_modules/**
     - venv/**
     - .direnv/**
+    - .serverless/**
+    - .tox/**
 
 plugins:
   - serverless-python-requirements
@@ -53,10 +73,6 @@ plugins:
 #          - - "arn:aws:s3:::"
 #            - "Ref" : "ServerlessDeploymentBucket"
 #            - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
 
 # you can add packaging information here
 #package:
