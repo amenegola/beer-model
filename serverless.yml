@@ -16,7 +16,7 @@ provider:
   
 functions:
   app:
-    handler: main.handler
+    handler: app.main.handler
     events:
       - httpApi:
           path: '*'

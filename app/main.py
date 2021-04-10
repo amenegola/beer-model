@@ -7,6 +7,7 @@ from app.core.config import (API_PREFIX, APP_NAME, APP_VERSION,
                              IS_DEBUG)
 from app.core.event_handlers import (start_app_handler,
                                      stop_app_handler)
+from mangum import Mangum
 
 
 def get_app() -> FastAPI:
@@ -20,3 +21,5 @@ def get_app() -> FastAPI:
 
 
 app = get_app()
+
+handler = Mangum(app)
