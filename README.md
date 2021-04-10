@@ -9,7 +9,7 @@ sudo npm cache clean -f
 sudo npm install -g n
 sudo n stable
 
-npm install --save-dev serverless-wsgi serverless-python-requirements
+npm install --save-dev serverless-python-requirements serverless-dotenv-plugin
 
 
 

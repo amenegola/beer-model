@@ -17,7 +17,7 @@ class in_response_suficiencia(BaseModel):
     ls_mun:List[str] 
     
 class in_response_vidas(BaseModel):
-    ls_mun:List[str] 
+    ls_mun:List[str]
     str_uf:str
 
 @app.get('/health')
@@ -27,7 +27,8 @@ def health():
 #@app.post("/predict", response_model=out_response)
 #def read_calculadora(entrada:in_response_suficiencia):
 @app.get("/predict")
-def read_root():
+def predict():
+
     return {"Hello Medium Reader": "from FastAPI & API Gateway"}
 
 handler = Mangum(app)
