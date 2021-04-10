@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from starlette.requests import Request
 
-from fastapi_skeleton.core import security
-from fastapi_skeleton.models.payload import PredictionPayload
-from fastapi_skeleton.models.prediction import PredictionResult
-from fastapi_skeleton.services.models import BeerModel
+from app.core import security
+from app.models.payload import PredictionPayload
+from app.models.prediction import PredictionResult
+from app.services.models import BeerModel
 
 router = APIRouter()
 

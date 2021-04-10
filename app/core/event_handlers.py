@@ -3,7 +3,7 @@ from typing import Callable
 from fastapi import FastAPI
 from loguru import logger
 
-from fastapi_skeleton.services.models import BeerModel
+from app.services.models import BeerModel
 
 
 def _startup_model(app: FastAPI) -> None:

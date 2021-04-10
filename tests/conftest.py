@@ -4,10 +4,12 @@ import pytest
 from starlette.config import environ
 from starlette.testclient import TestClient
 
-environ["API_KEY"] = "a1279d26-63ac-41f1-8266-4ef3702ad7cb"
-environ["DEFAULT_MODEL_PATH"] = "./sample_model/lin_reg_california_housing_model.joblib"
+environ["API_KEY"] = "134740f4-1c3c-4dba-ad02-875809d2bf0b"
+environ["BUCKET_MODEL_ARTIFACTS"] = "beer-model-artifacts"
+environ["MODEL_FILENAME"] = "model.joblib"
 
-from fastapi_skeleton.main import get_app  # noqa: E402
+
+from app.main import get_app  # noqa: E402
 
 
 @pytest.fixture()

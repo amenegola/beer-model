@@ -1,23 +1,23 @@
+import secrets
+from typing import Optional
 
-
-
-
-
-            status_code=HTTP_400_BAD_REQUEST, detail=NO_API_KEY, headers={}
-            status_code=HTTP_401_UNAUTHORIZED, detail=AUTH_REQ, headers={}
-        )
-        )
-        raise HTTPException(
-        raise HTTPException(
-    if header is None:
-    if not secrets.compare_digest(header, str(config.API_KEY)):
-    return True
-api_key = APIKeyHeader(name="token", auto_error=False)
-def validate_request(header: Optional[str] = Security(api_key)) -> bool:
 from fastapi import HTTPException, Security
 from fastapi.security.api_key import APIKeyHeader
-from fastapi_skeleton.core import config
-from fastapi_skeleton.core.messages import AUTH_REQ, NO_API_KEY
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
-from typing import Optional
-import secrets
+
+from app.core import config
+from app.core.messages import AUTH_REQ, NO_API_KEY
+
+api_key = APIKeyHeader(name="token", auto_error=False)
+
+
+def validate_request(header: Optional[str] = Security(api_key)) -> bool:
+    if header is None:
+        raise HTTPException(
+            status_code=HTTP_400_BAD_REQUEST, detail=NO_API_KEY, headers={}
+        )
+    if not secrets.compare_digest(header, str(config.API_KEY)):
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED, detail=AUTH_REQ, headers={}
+        )
+    return True

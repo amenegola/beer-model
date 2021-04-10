@@ -5,17 +5,17 @@ import numpy as np
 from loguru import logger
 import boto3
 
-from fastapi_skeleton.core.config import BUCKET_MODEL_ARTIFACTS, MODEL_FILENAME
-from fastapi_skeleton.core.messages import NO_VALID_PAYLOAD
-from fastapi_skeleton.models.payload import (PredictionPayload,
-                                             payload_to_list)
-from fastapi_skeleton.models.prediction import PredictionResult
+from app.core.config import BUCKET_MODEL_ARTIFACTS, MODEL_FILENAME
+from app.core.messages import NO_VALID_PAYLOAD
+from app.models.payload import (PredictionPayload,
+                                payload_to_list)
+from app.models.prediction import PredictionResult
 
 
 class BeerModel():
 
     def __init__(self):
-        self._load_local_model()
+        self._load_model()
 
     def _load_model(self):
         s3 = boto3.client('s3')
