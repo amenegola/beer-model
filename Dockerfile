@@ -1,18 +1,21 @@
-FROM python:3.8.1-slim # Image from dockerhub
+FROM python:3.7
 
-ENV PYTHONUNBUFFERED 1
+EXPOSE 8000
 
-EXPOSE 8000 # Expose the port 8000 in which our application runs
+ENV PYTHON_VERSION=3.6 \
+    PATH=$HOME/.local/bin/:$PATH \
+    PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8 \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    PIP_NO_CACHE_DIR=off
 
-WORKDIR /app # Make /app as a working directory in the container
+ADD requirements.txt .
 
-# Copy requirements from host, to docker container in /app 
-COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 
-# Copy everything from ./src directory to /app in the container
-COPY ./app . 
+ADD app/ /app
 
-RUN pip install -r requirements.txt # Install the dependencies
+ADD .env .
 
-# Run the application in the port 8000
 CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "app.main:app"]
