@@ -31,7 +31,13 @@ custom:
     dockerizePip: true
     useDownloadCache: false
     slim: true
-    zip: true
+    strip: true
+    noDeploy:
+      - boto3
+      - botocore
+      - scipy
+      - scipy.libs
+      - boto3
 
 package:
   exclude:

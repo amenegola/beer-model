@@ -9,7 +9,7 @@ environ["BUCKET_MODEL_ARTIFACTS"] = "beer-model-artifacts"
 environ["MODEL_FILENAME"] = "model.joblib"
 
 
-from main import get_app  # noqa: E402
+from app.main import get_app  # noqa: E402
 
 
 @pytest.fixture()
