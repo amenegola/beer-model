@@ -1,17 +1,14 @@
 import secrets
 from typing import Optional
-import json
 
 from fastapi import HTTPException, Security
 from fastapi.security.api_key import APIKeyHeader
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
-from app.core.get_secret import get_secret
+from app.core import config
 from app.core.messages import AUTH_REQ, NO_API_KEY
 
 api_key = APIKeyHeader(name="token", auto_error=False)
-
-TOKEN = json.loads(get_secret())['API_KEY']
 
 
 def validate_request(header: Optional[str] = Security(api_key)) -> bool:
@@ -19,7 +16,7 @@ def validate_request(header: Optional[str] = Security(api_key)) -> bool:
         raise HTTPException(
             status_code=HTTP_400_BAD_REQUEST, detail=NO_API_KEY, headers={}
         )
-    if not secrets.compare_digest(header, TOKEN):
+    if not secrets.compare_digest(header, str(config.API_KEY)):
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED, detail=AUTH_REQ, headers={}
         )
