@@ -13,7 +13,12 @@ provider:
   lambdaHashingVersion: 20201221
   logs:
     httpApi: true
-  
+  environment:
+    IS_DEBUG: ${env:IS_DEBUG}
+    API_KEY: ${env:API_KEY}
+    BUCKET_MODEL_ARTIFACTS: ${env:BUCKET_MODEL_ARTIFACTS}
+    MODEL_FILENAME: ${env:MODEL_FILENAME}
+
 functions:
   app:
     handler: main.handler
@@ -25,12 +30,22 @@ custom:
   pythonRequirements:
     dockerizePip: true
     useDownloadCache: false
+    slim: true
+    strip: true
+    noDeploy:
+      - boto3
+      - botocore
+      - scipy
+      - scipy.libs
+      - boto3
 
 package:
   exclude:
     - node_modules/**
     - venv/**
     - .direnv/**
+    - .serverless/**
+    - .tox/**
 
 plugins:
   - serverless-python-requirements
@@ -53,10 +68,6 @@ plugins:
 #          - - "arn:aws:s3:::"
 #            - "Ref" : "ServerlessDeploymentBucket"
 #            - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
 
 # you can add packaging information here
 #package:

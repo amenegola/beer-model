@@ -1,0 +1,1 @@
+docker run --rm --env-file .env -v ~/.aws/credentials:/root/.aws/credentials:ro --name beer-container -p 8000:8000 beer-model
